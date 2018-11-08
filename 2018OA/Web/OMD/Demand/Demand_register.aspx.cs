@@ -102,7 +102,7 @@ public partial class OMD_Demand_Demand_register : System.Web.UI.Page
         Model.RegisterDate = DateTime.Now;
         Model.Registrant = ZWL.Common.PublicMethod.GetSessionValue("UserName");
         Model.Describe = this.describe.Text.ToString();
-        Model.Department = 
+        //Model.Department = this.Department2
 
        
 	}
