@@ -270,22 +270,23 @@ namespace ZWL.BLL
 
 
            
-            parameters[1].Value = RegisterDate;
-            parameters[2].Value = Registrant;
-            parameters[3].Value = Describe;
-            parameters[4].Value = Department;
-            parameters[5].Value = Examinedate;
-            parameters[6].Value = Auditor;
-            parameters[7].Value = Followupperson;
-            parameters[8].Value = Completedate;
-            parameters[9].Value = CompletePerson;
-            parameters[10].Value = FeedBackState;
-            parameters[11].Value = FeedBackDate;
-            parameters[12].Value = State;
-            parameters[13].Value = TYPE;
-            parameters[14].Value = SoftWareType;
-            parameters[15].Value = FeedBackCall;
-            parameters[16].Value = SoftWareModule;
+            parameters[0].Value = RegisterDate;
+            parameters[1].Value = Registrant;
+            parameters[2].Value = Describe;
+            parameters[3].Value = Department;
+            parameters[4].Value = Examinedate;
+            parameters[5].Value = Auditor;
+            parameters[6].Value = Followupperson;
+            parameters[7].Value = Completedate;
+            parameters[8].Value = CompletePerson;
+            parameters[9].Value = FeedBackState;
+            parameters[10].Value = FeedBackDate;
+            parameters[11].Value = State;
+            parameters[12].Value = TYPE;
+            parameters[13].Value = SoftWareType;
+            parameters[14].Value = FeedBackCall;
+            parameters[15].Value = SoftWareModule;
+
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
             {
