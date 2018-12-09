@@ -30,7 +30,7 @@ public partial class OMD_Demand_Demand_register : System.Web.UI.Page
     protected void init()
     {
         Sql_Cmd_list("select distinct clinicType from ERPDepartment$", this.department1, "请选部门分类", "clinicType");
-        this.FaultDate.Text = DateTime.Now.ToString("yyyy-MM-dd");
+        this.registerdate.Text = DateTime.Now.ToString("yyyy-MM-dd");
     }
     protected void FaultClassification_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -116,7 +116,7 @@ public partial class OMD_Demand_Demand_register : System.Web.UI.Page
     {
         string value = this.department2.SelectedValue;
         string sqlcmd = string.Format("select * from ERPDepartment$ where [Desc] = '{0}'", value);
-        Sql_Cmd_TextBox(sqlcmd, this.RepairPeople, "Head");
+        Sql_Cmd_TextBox(sqlcmd, this.registrant, "Head");
         
     }
 

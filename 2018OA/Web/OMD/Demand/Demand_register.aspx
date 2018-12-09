@@ -14,7 +14,7 @@
          <table id="PrintHide" style="width: 100%" border="0" cellpadding="0" cellspacing="0">            
             <tr>
                 <td valign="middle" style="border-bottom: #006633 1px dashed; " class="auto-style1">&nbsp;<img src="../../images/BanKuaiJianTou.gif" />
-                <a class="hei" href="../Main/MyDesk.aspx">桌面</a>&nbsp;>>&nbsp;运维管理&nbsp;>>&nbsp;需求登记
+                <a class="hei" href="../Main/MyDesk.aspx">桌面</a>&nbsp;>>&nbsp;运维管理&nbsp;>>&nbsp;需求提交
                 </td>
                 <td align="right" valign="middle" style="border-bottom: #006633 1px dashed; " class="auto-style1">
                     <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../../images/Button/Submit.jpg"
@@ -87,14 +87,14 @@
 	            <td style="width: 170px; height: 25px; background-color: #D6E2F3" align="right">需求描述：</td>
 	            <td style="padding-left: 5px; height: 25px; background-color: #ffffff" >
 		            <asp:TextBox id="describe" runat="server" Width="550px"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="Phenomenon" ErrorMessage="*该项不可以为空"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="describe" ErrorMessage="*该项不可以为空"></asp:RequiredFieldValidator>
 	            </td>
 	        </tr>
             <tr>
 	            <td style="width: 170px; height: 25px; background-color: #D6E2F3" align="right">反馈电话：</td>
 	            <td style="padding-left: 5px; height: 25px; background-color: #ffffff" >
 		            <asp:TextBox id="FeedBackCall" runat="server" Width="550px"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="RepairCall" ErrorMessage="*该项不可以为空"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="FeedBackCall" ErrorMessage="*该项不可以为空"></asp:RequiredFieldValidator>
 	            </td>
             </tr>
 	

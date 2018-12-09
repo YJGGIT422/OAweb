@@ -110,7 +110,7 @@
     <form id="form1" runat="server">
         <asp:Button id="test" onclick="type_SQLquery" runat="server"></asp:Button>
         <iframe src="Navigation_Menu.aspx" scrolling="no" name="left" style=" height: 900px; width:150px;" ></iframe>
-        <iframe src="Personal_Query.aspx" scrolling="yes" name="main"style="height: 900px; width:550px" id="IFRAME1" onclick="return IFRAME1_onclick()" ></iframe> 
+        <iframe src="Personal_Query.aspx" scrolling="yes" name="main"style="height: 900px; width:900px" id="IFRAME1" onclick="return IFRAME1_onclick()" ></iframe> 
         <div id="container18" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         <div id="container7" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </form>

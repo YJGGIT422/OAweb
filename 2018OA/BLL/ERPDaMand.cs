@@ -29,6 +29,8 @@ namespace ZWL.BLL
         private string _softwaretype;
         private string _feedbackcall;
         private string _softwaremodule;
+        private string _auditopinion;
+        private DateTime? _estimateddate;
        
 
        
@@ -172,6 +174,24 @@ namespace ZWL.BLL
             set { _softwaremodule = value; }
             get { return _softwaremodule; }
         }
+        
+        /// <summary>
+        /// 审核意见    
+        /// </summary>
+        public string AuditOpinion
+        {
+            set { _auditopinion = value; }
+            get { return _auditopinion; }
+        }
+        //
+        /// <summary>
+        /// 审核意见    
+        /// </summary>
+        public DateTime? EstimatedDate
+        {
+            set { _estimateddate = value; }
+            get { return _estimateddate; }
+        }
 
 
 
@@ -217,6 +237,8 @@ namespace ZWL.BLL
                 SoftWareType = ds.Tables[0].Rows[0]["SoftWareType"].ToString();
                 FeedBackCall = ds.Tables[0].Rows[0]["FeedBackCall"].ToString();
                 SoftWareModule = ds.Tables[0].Rows[0]["SoftWareModule"].ToString();
+                AuditOpinion = ds.Tables[0].Rows[0]["AuditOpinion"].ToString();
+                EstimatedDate = DateTime.Parse(ds.Tables[0].Rows[0]["EstimatedDate"].ToString());
               
             }
         }
@@ -244,9 +266,9 @@ namespace ZWL.BLL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("insert into [DBOA].[dbo].[ERPDAMAND](");
-            strSql.Append("RegisterDate,Registrant,Describe,Department,Examinedate,Auditor,Followupperson,Completedate,CompletePerson,FeedBackState,FeedBackDate,State,TYPE,SoftWareType,FeedBackCall,SoftWareModule)");
+            strSql.Append("RegisterDate,Registrant,Describe,Department,Examinedate,Auditor,Followupperson,Completedate,CompletePerson,FeedBackState,FeedBackDate,State,TYPE,SoftWareType,FeedBackCall,SoftWareModule,AuditOpinion,EstimatedDate)");
             strSql.Append(" values (");
-            strSql.Append("@RegisterDate,@Registrant,@Describe,@Department,@Examinedate,@Auditor,@Followupperson,@Completedate,@CompletePerson,@FeedBackState,@FeedBackDate,@State,@TYPE,@SoftWareType,@FeedBackCall,@SoftWareModule)");
+            strSql.Append("@RegisterDate,@Registrant,@Describe,@Department,@Examinedate,@Auditor,@Followupperson,@Completedate,@CompletePerson,@FeedBackState,@FeedBackDate,@State,@TYPE,@SoftWareType,@FeedBackCall,@SoftWareModule,@AuditOpinion,@EstimatedDate)");
             strSql.Append(";select @@IDENTITY");
             SqlParameter[] parameters = {
 					
@@ -266,6 +288,8 @@ namespace ZWL.BLL
                     new SqlParameter("@SoftWareType", SqlDbType.VarChar,50),
                     new SqlParameter("@FeedBackCall", SqlDbType.VarChar,50),
                     new SqlParameter("@SoftWareModule", SqlDbType.VarChar,50),
+                    new SqlParameter("@AuditOpinion",SqlDbType.VarChar,50),
+                    new SqlParameter("EstimatedDate",SqlDbType.VarChar,50),
                     };
 
 
@@ -286,6 +310,8 @@ namespace ZWL.BLL
             parameters[13].Value = SoftWareType;
             parameters[14].Value = FeedBackCall;
             parameters[15].Value = SoftWareModule;
+            parameters[16].Value = AuditOpinion;
+            parameters[17].Value = EstimatedDate;
 
             object obj = DbHelperSQL.GetSingle(strSql.ToString(), parameters);
             if (obj == null)
@@ -361,40 +387,102 @@ namespace ZWL.BLL
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update [DBOA].[dbo].[ERPDAMAND] set ");
-            strSql.Append("AcceptPeople=@AcceptPeople,");
-            strSql.Append("State='1', AcceptDate=getdate() where OrderNO=@OrderNo ");
+            strSql.Append("Registrant=@Registrant,");
+            strSql.Append("State='1', RegisterDate=getdate() where OrderNO=@Number ");
             SqlParameter[] parameters = {
-                    new SqlParameter("@OrderNo", SqlDbType.VarChar,50),
-                    new SqlParameter("@AcceptPeople", SqlDbType.VarChar,50) };
-            //parameters[0].Value = OrderNo;
-            //parameters[1].Value = AcceptPeople;
+                    new SqlParameter("@Registrant", SqlDbType.VarChar,50),
+                    new SqlParameter("@Number", SqlDbType.VarChar,50) };
+            parameters[0].Value = Registrant;
+            parameters[1].Value = Number;
+            DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+        }
+        //AuditOpinion
+        /// <summary>
+        /// 更新一条数据（审核）
+        /// </summary>
+        public void Update_AuditOpinion()
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update [DBOA].[dbo].[ERPDAMAND] set ");
+            strSql.Append("AuditOpinion=@AuditOpinion,");
+            strSql.Append("Auditor=@Auditor,");
+            strSql.Append("State='2', Examinedate=CONVERT(varchar, getdate(), 120 ) where Number=@Number ");// CONVERT(varchar, getdate(), 120 ) = 2004-09-12 11:06:08
+            SqlParameter[] parameters = {
+                    new SqlParameter("@AuditOpinion", SqlDbType.VarChar,50),  
+                    new SqlParameter("@Auditor", SqlDbType.VarChar,50),
+                    new SqlParameter("@Number", SqlDbType.VarChar,50),     };
+            parameters[0].Value = AuditOpinion;
+            parameters[1].Value = Auditor;
+            parameters[2].Value = Number;
+            DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
+        }
+        //Distribution
+        /// <summary>
+        /// 更新一条数据（分配）
+        /// </summary>
+        public void Update_Distribution()
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update [DBOA].[dbo].[ERPDAMAND] set ");
+            strSql.Append("Followupperson=@Followupperson,");
+            strSql.Append("State='3' where Number=@Number ");// CONVERT(varchar, getdate(), 120 ) = 2004-09-12 11:06:08
+            SqlParameter[] parameters = {
+                    new SqlParameter("@Followupperson", SqlDbType.VarChar,50),  
+                    new SqlParameter("@Number", SqlDbType.VarChar,50),     };
+            parameters[0].Value = Followupperson;
+            parameters[1].Value = Number;
             DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
         }
 
 
+
         /// <summary>
-        /// 更新一条数据（派工）
+        /// 更新一条数据（）
         /// </summary>
-        public void Update_Technician()
+        public void Update()
         {
+            //,,,,,,,,,,,，,,,
             StringBuilder strSql = new StringBuilder();
             strSql.Append("update [DBOA].[dbo].[ERPDAMAND] set ");
-            strSql.Append("DispatchingPeople=@DispatchingPeople,");
-            strSql.Append("HeadPeople=@HeadPeople,");
-             strSql.Append("AssistPeople1=@AssistPeople1,");
-            strSql.Append("AssistPeople2=@AssistPeople2,");
-            strSql.Append("State='2',DispatchingDate=getdate() where OrderNo=@OrderNo ");
+            strSql.Append("RegisterDate=@RegisterDate,Registrant=@Registrant,Describe=@Describe,Department=@Department,Examinedate=@Examinedate,Auditor=@Auditor,");
+            strSql.Append("Followupperson=@Followupperson,Completedate=@Completedate,CompletePerson=@CompletePerson,FeedBackState=@FeedBackState,FeedBackDate=@FeedBackDate,");
+            strSql.Append("State=@State,TYPE=@TYPE,SoftWareType=@SoftWareType,FeedBackCall=@FeedBackCall,SoftWareModule=@SoftWareModule");
+            strSql.Append(" where Number=@Number ");
             SqlParameter[] parameters = {
-                    new SqlParameter("@OrderNo", SqlDbType.VarChar,50),
-                    new SqlParameter("@DispatchingPeople", SqlDbType.VarChar,50),
-                    new SqlParameter("@HeadPeople", SqlDbType.VarChar,50),
-                    new SqlParameter("@AssistPeople1", SqlDbType.VarChar,50),
-                    new SqlParameter("@AssistPeople2", SqlDbType.VarChar,50) };
-            /*parameters[0].Value = OrderNo;
-            parameters[1].Value = DispatchingPeople;
-            parameters[2].Value = HeadPeople;
-            parameters[3].Value = AssistPeople1;
-            parameters[4].Value = AssistPeople2;*/
+					new SqlParameter("@RegisterDate", SqlDbType.VarChar,50),
+					new SqlParameter("@Registrant", SqlDbType.VarChar,50),
+					new SqlParameter("@Describe", SqlDbType.VarChar,50),
+                    new SqlParameter("@Department", SqlDbType.VarChar,50),
+					new SqlParameter("@Examinedate", SqlDbType.DateTime),
+					new SqlParameter("@Auditor", SqlDbType.DateTime),
+					new SqlParameter("@Followupperson", SqlDbType.VarChar,50),
+                    new SqlParameter("@Completedate", SqlDbType.VarChar,50),
+					new SqlParameter("@CompletePerson", SqlDbType.VarChar,50),
+					new SqlParameter("@FeedBackState", SqlDbType.VarChar,50),
+					new SqlParameter("@FeedBackDate", SqlDbType.VarChar,50),
+                    new SqlParameter("@State", SqlDbType.VarChar,50),
+                    new SqlParameter("@TYPE", SqlDbType.VarChar,50), 
+                    new SqlParameter("@SoftWareType", SqlDbType.VarChar,50),
+                    new SqlParameter("@FeedBackCall", SqlDbType.VarChar,50),
+                    new SqlParameter("@SoftWareModule", SqlDbType.VarChar,50),  };
+            
+            parameters[0].Value = RegisterDate;
+            parameters[1].Value = Registrant;
+            parameters[2].Value = Describe;
+            parameters[3].Value = Department;
+            parameters[4].Value = Examinedate;
+            parameters[5].Value = Auditor;
+            parameters[6].Value = Followupperson;
+            parameters[7].Value = Completedate;
+            parameters[8].Value = CompletePerson;
+            parameters[9].Value = FeedBackState;
+            parameters[10].Value = FeedBackDate;
+            parameters[11].Value = State;
+            parameters[12].Value = TYPE;
+            parameters[13].Value = SoftWareType;
+            parameters[14].Value = FeedBackCall;
+            parameters[15].Value = SoftWareModule;
+            parameters[16].Value = Number;
             DbHelperSQL.ExecuteSql(strSql.ToString(), parameters);
         }
         /// <summary>
